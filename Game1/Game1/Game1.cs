@@ -68,30 +68,38 @@ namespace Game1
 
             hitbox = new Rectangle((int)position.X, (int)position.Y, kvadrat.Width, kvadrat.Height);
 
-            if (kstate.IsKeyDown(Keys.W))
-                velocityY = -10;
-            if (kstate.IsKeyDown(Keys.A))
-                velocityX = -10 * (float)deltaTime;
-            if (kstate.IsKeyDown(Keys.D))
-                velocityY = -10;
-
             if (hitbox.Intersects(TempLevel))
             {
                 isOnGround = true;
+                velocityY = 0;
             }
+            else
+                isOnGround = false;
 
+
+
+            if (isOnGround == true)
+            {
+                if (kstate.IsKeyDown(Keys.A))
+                    velocityX += (float)-8 * (float)deltaTime;                
+                if (kstate.IsKeyDown(Keys.D))
+                    velocityX += (float)8*(float)deltaTime;
+                if (kstate.IsKeyUp(Keys.A) && kstate.IsKeyUp(Keys.D))
+                    velocityX = 0;
+                
+               
+                if (kstate.IsKeyDown(Keys.W))               
+                    velocityY = -5;
+                
+            }
+                                                             
 
             if (isOnGround == false)
             {
                 oldvelocityY = velocityY;
-                velocityY = oldvelocityY + (float)deltaTime * 2;
+                velocityY = oldvelocityY + (float)deltaTime * 5;
             }
-            else
-                velocityY = 0;
-            
-               
-
-
+                                  
             velocity = new Vector2(velocityX, velocityY);
 
             position += velocity; //(float)deltaTime;
