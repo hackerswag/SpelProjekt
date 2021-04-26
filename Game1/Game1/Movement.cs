@@ -6,6 +6,7 @@ namespace Game1
 {
     class Movement
     {
-        
+        int oldyspeed;
+        int yspeed;
     }
 }

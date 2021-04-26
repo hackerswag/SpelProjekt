@@ -4,9 +4,17 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
+    <File>C:/Users/emileneroth/source/repos/SpelProjekt/Game1/Game1/Content/kisspng-square-area-angle-pattern-transparent-shapes-cliparts-5a85f20183f7a4.0240793815187276815405.png</File>
+    <File>C:/Users/emileneroth/source/repos/SpelProjekt/Game1/Game1/Content/kvadrat1.png</File>
+    <File>C:/Users/emileneroth/source/repos/SpelProjekt/Game1/Game1/Content/kvadrat2.png</File>
     <File>C:/Users/emileneroth/source/repos/SpelProjekt/Game1/Game1/Content/pixel.png</File>
+    <File>C:/Users/emileneroth/source/repos/SpelProjekt/Game1/Game1/Content/xwing.png</File>
   </SourceFiles>
   <DestFiles>
+    <File>kvadrat.0240793815187276815405.png</File>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
   </DestFiles>
 </SourceFileCollection>
