@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System;
+using System.Diagnostics;
 
 namespace Game1
 {
@@ -16,20 +17,25 @@ namespace Game1
         Texture2D pixel;
         Texture2D kvadrat;
 
-        static int bruv = 3;
-       
+
         static float velocityX;
+        static float maxVelocityX;
         static float velocityY;
         static float oldvelocityX;
         static float oldvelocityY;
         bool isOnGround;
+        bool isMaxSpeed;
+        bool touchingWall;
+
+        Stopwatch stopWatch = new Stopwatch();
 
         Vector2 position = new Vector2(100, 100);
-        Vector2 velocity;
-
-
+        Vector2 velocity;        
         Rectangle hitbox;
         Rectangle TempLevel = new Rectangle(0, 400, 1000, 100);
+        Rectangle TempWall = new Rectangle(500, 200, 100, 1000); 
+        
+
         
         public Game1()
         {
@@ -62,11 +68,17 @@ namespace Game1
 
             // TODO: Add your update logic here
             
-            double deltaTime =gameTime.ElapsedGameTime.TotalSeconds;
+            float deltaTime =(float)gameTime.ElapsedGameTime.TotalSeconds;
 
             KeyboardState kstate = Keyboard.GetState();
 
             hitbox = new Rectangle((int)position.X, (int)position.Y, kvadrat.Width, kvadrat.Height);
+
+            maxVelocityX = 5;
+
+            if (velocityX == maxVelocityX)
+                isMaxSpeed = true;
+
 
             if (hitbox.Intersects(TempLevel))
             {
@@ -76,28 +88,67 @@ namespace Game1
             else
                 isOnGround = false;
 
+            if (hitbox.Intersects(TempWall))
+            {
+                touchingWall = true;
+                if (isOnGround == false)
+                    velocityX = 0;
+                    
 
+
+                
+            }
+               
+
+
+            if (isOnGround == true && isMaxSpeed == false)
+            {
+                if (kstate.IsKeyDown(Keys.A))
+                {
+                    if (velocityX > 0)
+                        velocityX += -10 * deltaTime;
+                    velocityX += -5 * deltaTime;
+                }
+
+                if (kstate.IsKeyDown(Keys.D))
+                {
+                    if (velocityX < 0)
+                        velocityX += 10 * deltaTime;
+                    velocityX += 5 * deltaTime;
+                }           
+
+
+                //if (kstate.IsKeyDown(Keys.A))  // omedelbar rörelse
+                //{
+                //    Player.velocityX = -5;
+                //    if (kstate.IsKeyDown(Keys.D))
+                //        Player.velocityX = 5;
+                //}
+                //if (kstate.IsKeyDown(Keys.D))
+                //{
+                 //   Player.velocityX = 5;
+                  //  if (kstate.IsKeyDown(Keys.A))
+                   //     Player.velocityX = -5;
+               // }
+            }
 
             if (isOnGround == true)
             {
-                if (kstate.IsKeyDown(Keys.A))
-                    velocityX += (float)-8 * (float)deltaTime;                
-                if (kstate.IsKeyDown(Keys.D))
-                    velocityX += (float)8*(float)deltaTime;
-                if (kstate.IsKeyUp(Keys.A) && kstate.IsKeyUp(Keys.D))
-                    velocityX = 0;
-                
-               
-                if (kstate.IsKeyDown(Keys.W))               
-                    velocityY = -5;
-                
+                if (kstate.IsKeyUp(Keys.A) && kstate.IsKeyUp(Keys.D) && velocityX < 0)                    
+                    velocityX += 10 * deltaTime;
+
+                if (kstate.IsKeyUp(Keys.A) && kstate.IsKeyUp(Keys.D) && velocityX > 0)
+                    velocityX += -10 * deltaTime;
+
+                if (kstate.IsKeyDown(Keys.W))
+                    velocityY = (float) -5.5;
             }
                                                              
 
             if (isOnGround == false)
             {
                 oldvelocityY = velocityY;
-                velocityY = oldvelocityY + (float)deltaTime * 5;
+                velocityY = oldvelocityY + deltaTime * 10;
             }
                                   
             velocity = new Vector2(velocityX, velocityY);
@@ -116,6 +167,7 @@ namespace Game1
             _spriteBatch.Begin();
             _spriteBatch.Draw(kvadrat, position, Color.White);
             _spriteBatch.Draw(pixel, TempLevel, Color.White);
+            _spriteBatch.Draw(pixel, TempWall, Color.White);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
