@@ -26,14 +26,16 @@ namespace Game1
         bool isOnGround;
         bool isMaxSpeed;
         bool touchingWall;
-
+        
         Stopwatch stopWatch = new Stopwatch();
 
         Vector2 position = new Vector2(100, 100);
         Vector2 velocity;        
         Rectangle hitbox;
+        Rectangle nextHitbox;
         Rectangle TempLevel = new Rectangle(0, 400, 1000, 100);
         Rectangle TempWall = new Rectangle(500, 200, 100, 1000); 
+
         
 
         
@@ -72,35 +74,16 @@ namespace Game1
 
             KeyboardState kstate = Keyboard.GetState();
 
-            hitbox = new Rectangle((int)position.X, (int)position.Y, kvadrat.Width, kvadrat.Height);
-
-            maxVelocityX = 5;
-
-            if (velocityX == maxVelocityX)
-                isMaxSpeed = true;
+            //hitbox = new Rectangle((int)position.X, (int)position.Y, kvadrat.Width, kvadrat.Height);
+            //nextHitbox = new Rectangle((int)position.X + (int)velocityX, (int)position.Y + (int)velocityX, kvadrat.Width, kvadrat.Height);
 
 
-            if (hitbox.Intersects(TempLevel))
-            {
-                isOnGround = true;
-                velocityY = 0;
-            }
-            else
-                isOnGround = false;
+            
 
-            if (hitbox.Intersects(TempWall))
-            {
-                touchingWall = true;
-                if (isOnGround == false)
-                    velocityX = 0;
-                    
+            
 
-
-                
-            }
-               
-
-
+            
+            
             if (isOnGround == true && isMaxSpeed == false)
             {
                 if (kstate.IsKeyDown(Keys.A))
@@ -118,39 +101,48 @@ namespace Game1
                 }           
 
 
-                //if (kstate.IsKeyDown(Keys.A))  // omedelbar rörelse
-                //{
-                //    Player.velocityX = -5;
-                //    if (kstate.IsKeyDown(Keys.D))
-                //        Player.velocityX = 5;
-                //}
-                //if (kstate.IsKeyDown(Keys.D))
-                //{
-                 //   Player.velocityX = 5;
-                  //  if (kstate.IsKeyDown(Keys.A))
-                   //     Player.velocityX = -5;
-               // }
+                
             }
 
-            if (isOnGround == true)
+            if (velocityX == maxVelocityX)
+                isMaxSpeed = true;
+
+
+
+            if (hitbox.Right == TempWall.Left)
             {
-                if (kstate.IsKeyUp(Keys.A) && kstate.IsKeyUp(Keys.D) && velocityX < 0)                    
-                    velocityX += 10 * deltaTime;
+                touchingWall = true;
+                if (isOnGround == false && touchingWall == true)
+                    velocityX = 0;
+                if (isOnGround == true && touchingWall == true) ;
 
-                if (kstate.IsKeyUp(Keys.A) && kstate.IsKeyUp(Keys.D) && velocityX > 0)
-                    velocityX += -10 * deltaTime;
 
-                if (kstate.IsKeyDown(Keys.W))
-                    velocityY = (float) -5.5;
+                
             }
+
+            if (nextHitbox.Intersects(TempLevel))
+            {
+                isOnGround = true;
+                touchingWall = false;
+                velocityY = 0;
+            }
+            else
+                isOnGround = false;
+
+
+            
+            
                                                              
+
 
             if (isOnGround == false)
             {
                 oldvelocityY = velocityY;
                 velocityY = oldvelocityY + deltaTime * 10;
             }
-                                  
+
+            
+
             velocity = new Vector2(velocityX, velocityY);
 
             position += velocity; //(float)deltaTime;
