@@ -16,29 +16,22 @@ namespace Game1
         
         Texture2D pixel;
         Texture2D kvadrat;
-
-
-        static float velocityX;
-        static float maxVelocityX;
-        static float velocityY;
-        static float oldvelocityX;
-        static float oldvelocityY;
-        bool isOnGround;
-        bool isMaxSpeed;
-        bool touchingWall;
-        
+        Texture2D levelsquare;
+       
         Stopwatch stopWatch = new Stopwatch();
 
         Vector2 position = new Vector2(100, 100);
-        Vector2 velocity;        
-        Rectangle hitbox;
-        Rectangle nextHitbox;
+
         Rectangle TempLevel = new Rectangle(0, 400, 1000, 100);
-        Rectangle TempWall = new Rectangle(500, 200, 100, 1000); 
+        Rectangle TempWall = new Rectangle(500, 200, 100, 1000);
 
         
 
+        private List<Sprites.Sprite> _sprites;
+
         
+
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -61,7 +54,22 @@ namespace Game1
             // TODO: use this.Content to load your game content here
             pixel = Content.Load<Texture2D>("pixel");
             kvadrat = Content.Load<Texture2D>("kvadrat2");
-        }
+            levelsquare = Content.Load<Texture2D>("pixil-frame-0 (1)");
+            _sprites = new List<Sprites.Sprite>();
+            
+            Sprites.Player p = new Sprites.Player(kvadrat);
+            p.Position = new Vector2(100, 100);
+            Sprites.Sprite temp = new Sprites.Sprite(levelsquare);
+            temp.Position = new Vector2(100, 300);
+
+            _sprites.Add(temp);
+            _sprites.Add(p);
+                
+            }
+           
+
+
+        
 
         protected override void Update(GameTime gameTime)
         {
@@ -69,84 +77,12 @@ namespace Game1
                 Exit();
 
             // TODO: Add your update logic here
-            
-            float deltaTime =(float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            KeyboardState kstate = Keyboard.GetState();
-
-            //hitbox = new Rectangle((int)position.X, (int)position.Y, kvadrat.Width, kvadrat.Height);
-            //nextHitbox = new Rectangle((int)position.X + (int)velocityX, (int)position.Y + (int)velocityX, kvadrat.Width, kvadrat.Height);
-
-
-            
-
-            
-
-            
-            
-            if (isOnGround == true && isMaxSpeed == false)
-            {
-                if (kstate.IsKeyDown(Keys.A))
-                {
-                    if (velocityX > 0)
-                        velocityX += -10 * deltaTime;
-                    velocityX += -5 * deltaTime;
-                }
-
-                if (kstate.IsKeyDown(Keys.D))
-                {
-                    if (velocityX < 0)
-                        velocityX += 10 * deltaTime;
-                    velocityX += 5 * deltaTime;
-                }           
-
-
-                
-            }
-
-            if (velocityX == maxVelocityX)
-                isMaxSpeed = true;
+            foreach (var sprite in _sprites)
+                sprite.Update(gameTime, _sprites);
 
 
 
-            if (hitbox.Right == TempWall.Left)
-            {
-                touchingWall = true;
-                if (isOnGround == false && touchingWall == true)
-                    velocityX = 0;
-                if (isOnGround == true && touchingWall == true) ;
-
-
-                
-            }
-
-            if (nextHitbox.Intersects(TempLevel))
-            {
-                isOnGround = true;
-                touchingWall = false;
-                velocityY = 0;
-            }
-            else
-                isOnGround = false;
-
-
-            
-            
-                                                             
-
-
-            if (isOnGround == false)
-            {
-                oldvelocityY = velocityY;
-                velocityY = oldvelocityY + deltaTime * 10;
-            }
-
-            
-
-            velocity = new Vector2(velocityX, velocityY);
-
-            position += velocity; //(float)deltaTime;
-            
             base.Update(gameTime);
 
         }
@@ -157,10 +93,11 @@ namespace Game1
 
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
-            _spriteBatch.Draw(kvadrat, position, Color.White);
-            _spriteBatch.Draw(pixel, TempLevel, Color.White);
-            _spriteBatch.Draw(pixel, TempWall, Color.White);
+
+            foreach (var sprite in _sprites)
+                sprite.Draw(_spriteBatch);
             _spriteBatch.End();
+
             base.Draw(gameTime);
         }
     }

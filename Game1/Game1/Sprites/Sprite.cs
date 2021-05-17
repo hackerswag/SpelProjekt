@@ -9,7 +9,21 @@ namespace Game1.Sprites
 {
     public class Sprite
     {
+
+        
+        public float velocityX;
+        public float maxVelocityX;
+        public float velocityY;
+        
+        public float oldvelocityY;
+        public Vector2 Position;
+        public Vector2 Velocity;
+
+        public bool isOnGround;
+        public bool isMaxSpeed;
+        public Color Colour = Color.White;
         protected Texture2D _texture;
+
         public Rectangle Rectangle
         {
             get
@@ -17,25 +31,21 @@ namespace Game1.Sprites
                 return new Rectangle((int)Position.X, (int)Position.Y, _texture.Width, _texture.Height); //skapar rektangel på spriten (hitbox)
             }
         }
+
         public Sprite(Texture2D texture)
         {
             _texture = texture;
         }
 
+        public virtual void Update(GameTime gameTime, List<Sprite> sprites)
+        {
 
+        }
 
-
-        public float maxvelocityX;
-        public float velocityX;
-        public float maxVelocityX;
-        public float velocityY;
-        public float oldvelocityX;
-        public float oldvelocityY;
-        public Vector2 Position;
-        public Vector2 Velocity;
-       
-
-
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(_texture, Position, Colour);
+        }
 
         protected bool IsTouchingLeft(Sprite sprite) // Kollar om sprite rör till vänster
         {
@@ -68,6 +78,10 @@ namespace Game1.Sprites
               this.Rectangle.Right > sprite.Rectangle.Left &&
               this.Rectangle.Left < sprite.Rectangle.Right;
         }
-
+       // public void SetPosition(Vector2 input)
+       // {
+       //     Position = input;
+       // }
     }
+    
 }

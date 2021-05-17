@@ -16,47 +16,98 @@ namespace Game1.Sprites
 
             }
 
-        KeyboardState kstate = Keyboard.GetState();
+        
 
-        public void Update(GameTime gameTime, List<Sprite> sprites)
+
+        public override void Update(GameTime gameTime, List<Sprite> sprites)
         {
-            Move();
+            KeyboardState kstate = Keyboard.GetState();
+
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;            
+
+            maxVelocityX = 15;
+
+            if (isOnGround == true && isMaxSpeed == false)
+            {
+                if (kstate.IsKeyDown(Keys.A))
+                {
+                    if (this.velocityX > 0)
+                        this.velocityX += -10 * deltaTime;
+                    this.velocityX += -5 * deltaTime;
+                }
+
+                if (kstate.IsKeyDown(Keys.D))
+                {
+                    if (this.velocityX < 0)
+                        this.velocityX += 10 * deltaTime;
+                    this.velocityX += 5 * deltaTime;
+                }
+            }
+
+
+            if (this.isOnGround == true)
+            {
+                if (kstate.IsKeyDown(Keys.W))
+                {
+                    this.velocityY = (float)-5.5;
+                    //this.isOnGround = false;
+                }
+                    
+                
+
+            }
+
+
+            if (this.isOnGround == false)
+            {
+                //this.oldvelocityY = this.velocityY;
+                this.velocityY = 3;
+            }
+            
+
+            Velocity = new Vector2(this.velocityX, this.velocityY);
+            Position += Velocity;
+            Velocity = Vector2.Zero;
+
+            if (this.velocityX == maxVelocityX)
+                isMaxSpeed = true;
 
             foreach (var sprite in sprites)
             {
                 if (sprite == this)
                     continue;
 
-                if ((this.Velocity.X > 0 && this.IsTouchingLeft(sprite)) ||
-                    (this.Velocity.X < 0 & this.IsTouchingRight(sprite)))
-                    this.Velocity.X = 0;
+                if ((this.velocityX > 0 && this.IsTouchingLeft(sprite)) ||
+                    (this.velocityX < 0 & this.IsTouchingRight(sprite)))
+                {
+                    this.velocityX = 0;
 
-                if ((this.Velocity.Y > 0 && this.IsTouchingTop(sprite)) ||
-                    (this.Velocity.Y < 0 & this.IsTouchingBottom(sprite)))
-                    this.Velocity.Y = 0;
+                }
+                    
+                if (this.velocityY > 0 && this.IsTouchingTop(sprite))                    
+                {
+                    
+                    this.velocityY = 0;
+                }
+                
+
+                if (this.velocityY < 0 && this.IsTouchingBottom(sprite))
+                {                    
+                    this.velocityY = 0;
+                    
+                }
+
+                if (this.velocityY == 0)
+                {
+                    isOnGround = true;
+                }
+                    
             }
 
         }
 
 
-        private void Move()
-        {
-            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (kstate.IsKeyUp(Keys.A) && kstate.IsKeyUp(Keys.D) && velocityX < 0)
-                velocityX += 10 * deltaTime;
-
-            if (kstate.IsKeyUp(Keys.A) && kstate.IsKeyUp(Keys.D) && velocityX > 0)
-                velocityX += -10 * deltaTime;
-
-            if (kstate.IsKeyDown(Keys.W))
-                velocityY = (float)-5.5;
-
-        }
-
-            Velocity = new Vector2(this.velocityX, this.velocityY);
-            Position += Velocity;
-        }
+      
 
      
     }
