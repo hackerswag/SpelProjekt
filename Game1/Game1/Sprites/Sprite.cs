@@ -10,17 +10,19 @@ namespace Game1.Sprites
     public class Sprite
     {
 
-        
+
         public float velocityX;
         public float maxVelocityX;
         public float velocityY;
-        
+
         public float oldvelocityY;
         public Vector2 Position;
         public Vector2 Velocity;
 
         public bool isOnGround;
         public bool isMaxSpeed;
+        public bool isOnWallRight;
+        public bool isOnWallLeft;
         public Color Colour = Color.White;
         protected Texture2D _texture;
 
@@ -32,9 +34,17 @@ namespace Game1.Sprites
             }
         }
 
+        public Sprite(Texture2D texture, int x, int y)
+        {
+            _texture = texture;
+            Position = new Vector2(x, y);
+
+
+        }
         public Sprite(Texture2D texture)
         {
             _texture = texture;
+
         }
 
         public virtual void Update(GameTime gameTime, List<Sprite> sprites)
@@ -78,10 +88,9 @@ namespace Game1.Sprites
               this.Rectangle.Right > sprite.Rectangle.Left &&
               this.Rectangle.Left < sprite.Rectangle.Right;
         }
-       // public void SetPosition(Vector2 input)
-       // {
-       //     Position = input;
-       // }
+
+    }
+        
     }
     
-}
+

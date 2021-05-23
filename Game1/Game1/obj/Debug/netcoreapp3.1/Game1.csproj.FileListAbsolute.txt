@@ -41,3 +41,7 @@ C:\Users\emileneroth\source\repos\SpelProjekt\Game1\Game1\bin\Debug\netcoreapp3.
 C:\Users\emileneroth\source\repos\SpelProjekt\Game1\Game1\bin\Debug\netcoreapp3.1\Content\kvadrat1.xnb
 C:\Users\emileneroth\source\repos\SpelProjekt\Game1\Game1\bin\Debug\netcoreapp3.1\Content\kvadrat2.xnb
 C:\Users\emileneroth\source\repos\SpelProjekt\Game1\Game1\bin\Debug\netcoreapp3.1\Content\pixil-frame-0 (1).xnb
+C:\Users\emileneroth\source\repos\SpelProjekt\Game1\Game1\bin\Debug\netcoreapp3.1\Content\50x100.xnb
+C:\Users\emileneroth\source\repos\SpelProjekt\Game1\Game1\bin\Debug\netcoreapp3.1\Content\50x50.xnb
+C:\Users\emileneroth\source\repos\SpelProjekt\Game1\Game1\bin\Debug\netcoreapp3.1\Content\700x50.xnb
+C:\Users\emileneroth\source\repos\SpelProjekt\Game1\Game1\bin\Debug\netcoreapp3.1\Content\100x50.xnb
