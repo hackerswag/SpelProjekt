@@ -23,6 +23,9 @@ namespace Game1.Sprites
         public bool isMaxSpeed;
         public bool isOnWallRight;
         public bool isOnWallLeft;
+        public bool playerIsOn;
+        public bool playerIsAgainstLeft;
+        public bool playerIsAgainstRight;
         public Color Colour = Color.White;
         protected Texture2D _texture;
 
