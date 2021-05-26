@@ -25,7 +25,7 @@ namespace Game1.Sprites
 
             maxVelocityX = 15;
 
-            if (isOnGround == true && isMaxSpeed == false)
+            if (isOnGround == true && isMaxSpeed == false) //Allows horizontal movement while on the ground
             {
 
                 if (kstate.IsKeyDown(Keys.A) && isOnWallLeft == false)
@@ -43,7 +43,7 @@ namespace Game1.Sprites
                 }
             }
 
-            if (isOnGround == false)
+            if (isOnGround == false) // Allows wall jumps
             {
                 if (kstate.IsKeyDown(Keys.W) && isOnWallRight == true)
                 {
@@ -57,13 +57,13 @@ namespace Game1.Sprites
                 }
             }
 
-            if (this.isOnGround == false)
+            if (this.isOnGround == false) // Falling physics
             {
                 this.oldvelocityY = this.velocityY;
                 this.velocityY = this.oldvelocityY + 10 * deltaTime;
             }
 
-            if (isOnGround == true)
+            if (isOnGround == true) //Slows player down if no keys are held
             {
                 if (kstate.IsKeyUp(Keys.A) && kstate.IsKeyUp(Keys.D) && velocityX < 0)
                     velocityX += 10 * deltaTime;
@@ -71,9 +71,9 @@ namespace Game1.Sprites
                 if (kstate.IsKeyUp(Keys.A) && kstate.IsKeyUp(Keys.D) && velocityX > 0)
                     velocityX += -10 * deltaTime;
             }
-            if (this.isOnGround == true)
+            if (this.isOnGround == true) //Allows jumping while on the ground
             {
-                if (kstate.IsKeyDown(Keys.W))
+                if (kstate.IsKeyDown(Keys.W)) 
                 {
                     this.velocityY = (float)-5.5;
                     //this.isOnGround = false;
@@ -87,7 +87,7 @@ namespace Game1.Sprites
 
 
 
-            Velocity = new Vector2(this.velocityX, this.velocityY);
+            Velocity = new Vector2(this.velocityX, this.velocityY); //Updates position based on velocity
             Position += Velocity;
             Velocity = Vector2.Zero;
 
@@ -99,25 +99,25 @@ namespace Game1.Sprites
                 if (sprite == this)
                     continue;
 
-                if (this.velocityX > 0 && this.IsTouchingLeft(sprite))
+                if (this.velocityX > 0 && this.IsTouchingLeft(sprite)) //Stops player X speed if colliding to the right
                 {
                     this.velocityX = 0;
-                    this.Position.X = sprite.Rectangle.Left - this._texture.Width;
+                    this.Position.X = sprite.Rectangle.Left - this._texture.Width; // prevents clipping into sprites
                     this.isOnWallRight = true;
                     sprite.playerIsAgainstLeft = true;
-                    sprite.Colour = Color.Black;
+                    sprite.Colour = Color.Crimson;
                 }
                
-                if (this.velocityX < 0 && this.IsTouchingRight(sprite))
+                if (this.velocityX < 0 && this.IsTouchingRight(sprite)) //Stops player X speed if colliding to the left
                 {
                     this.velocityX = 0;
                     this.isOnWallLeft = true;
                     sprite.playerIsAgainstRight = true;
                     this.Position.X = sprite.Rectangle.Right;
-                    sprite.Colour = Color.Black;
+                    sprite.Colour = Color.Crimson;
                     
                 }
-                if (this.velocityY > 0 && this.IsTouchingTop(sprite))
+                if (this.velocityY > 0 && this.IsTouchingTop(sprite)) //Stops player Y speed if colliding with sprite below
                 {
                     this.velocityY = 0;
                     this.Position.Y = sprite.Rectangle.Top - this._texture.Height;
@@ -128,7 +128,7 @@ namespace Game1.Sprites
                 }
 
 
-                if (this.velocityY < 0 && this.IsTouchingBottom(sprite))
+                if (this.velocityY < 0 && this.IsTouchingBottom(sprite)) //Stops players Y speed if colliding with sprite above
                 {
                     this.velocityY = 0;
                     this.isOnGround = false;
@@ -152,7 +152,7 @@ namespace Game1.Sprites
                    
                 }
 
-                if (sprite.playerIsAgainstLeft == true)
+                if (sprite.playerIsAgainstLeft == true) //Checks if player has stopped coliding with wall to the left
                 {
                     if (this.Rectangle.Y > (sprite.Rectangle.Y+sprite.Rectangle.Height) ||
                         (this.Rectangle.Y + this.Rectangle.Height) < (sprite.Rectangle.Y))
@@ -162,7 +162,7 @@ namespace Game1.Sprites
                         sprite.playerIsAgainstLeft = false;
                     }
                 }
-                if (sprite.playerIsAgainstRight == true)
+                if (sprite.playerIsAgainstRight == true) //Checks if player has stopped coliding with wall to the right
                 {
                     if (this.Rectangle.Y > (sprite.Rectangle.Y + sprite.Rectangle.Height) ||
                         (this.Rectangle.Y+this.Rectangle.Height) < (sprite.Rectangle.Y))
